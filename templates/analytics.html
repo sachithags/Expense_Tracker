@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics - Smart Expense Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .stat-card { transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-money-bill-wave"></i> Smart Expense Tracker
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="/">Dashboard</a>
+                <a class="nav-link" href="/add">Add Expense</a>
+                <a class="nav-link active" href="/analytics">Analytics</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2><i class="fas fa-chart-bar"></i> Analytics Dashboard</h2>
+        <p class="text-muted">Track your spending patterns and insights</p>
+        
+        {% if no_data %}
+        <div class="card mt-4">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                <h4>No data available yet</h4>
+                <p class="text-muted">Add some expenses to see analytics.</p>
+                <a href="/add" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Your First Expense
+                </a>
+            </div>
+        </div>
+        {% else %}
+        
+        <!-- Monthly Overview -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-calendar-alt"></i> 
+                    {{ month }} - Monthly Overview
+                    <span class="badge bg-light text-primary float-end">
+                        AI Powered Analysis
+                    </span>
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Total Spent -->
+                    <div class="col-md-3">
+                        <div class="card stat-card border-primary">
+                            <div class="card-body text-center">
+                                <i class="fas fa-money-bill-wave fa-2x text-primary mb-2"></i>
+                                <h3 class="text-primary">₹{{ stats.total_spent|round(2) }}</h3>
+                                <small class="text-muted">Total Spent</small>
+                                <div class="mt-2">
+                                    <span class="badge bg-primary">
+                                        <i class="fas fa-robot"></i> AI Tracked
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transactions -->
+                    <div class="col-md-3">
+                        <div class="card stat-card border-success">
+                            <div class="card-body text-center">
+                                <i class="fas fa-exchange-alt fa-2x text-success mb-2"></i>
+                                <h3 class="text-success">{{ stats.total_transactions }}</h3>
+                                <small class="text-muted">Transactions</small>
+                                <div class="mt-2">
+                                    <span class="badge bg-success">Pattern Analyzed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Average per Transaction -->
+                    <div class="col-md-3">
+                        <div class="card stat-card border-info">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calculator fa-2x text-info mb-2"></i>
+                                <h3 class="text-info">₹{{ stats.avg_transaction|round(2) }}</h3>
+                                <small class="text-muted">Avg per Transaction</small>
+                                <div class="mt-2">
+                                    <span class="badge bg-info">ML Calculated</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Category -->
+                    <div class="col-md-3">
+                        <div class="card stat-card border-warning">
+                            <div class="card-body text-center">
+                                <i class="fas fa-tag fa-2x text-warning mb-2"></i>
+                                <h3 class="text-warning">{{ stats.favorite_category }}</h3>
+                                <small class="text-muted">Top Category</small>
+                                <div class="mt-2">
+                                    <span class="badge bg-warning">AI Detected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Stats -->
+        <div class="row mt-4">
+            <!-- Most Expensive -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Biggest Expense</h5>
+                    </div>
+                    <div class="card-body text-center py-4">
+                        <h1 class="text-danger">₹{{ stats.most_expensive|round(2) }}</h1>
+                        <p class="text-muted">Single largest expense this month</p>
+                        <div class="mt-3">
+                            <span class="badge bg-danger">
+                                <i class="fas fa-brain"></i> AI Alert: Large Expense
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Insights Section -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-robot"></i> AI Insights
+                            <span class="badge bg-light text-info float-end">Live Analysis</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Insight 1: Spending Rate -->
+                        <div class="alert alert-light mb-3">
+                            <h6><i class="fas fa-chart-line text-primary"></i> Spending Rate</h6>
+                            <p>
+                                Daily average: <strong>₹{{ (stats.total_spent/30)|round(2) }}</strong><br>
+                                {% if stats.avg_transaction > 500 %}
+                                <span class="text-warning">⚠️ Your average transaction is higher than typical</span>
+                                {% else %}
+                                <span class="text-success">✅ Your spending rate is within normal range</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        
+                        <!-- Insight 2: Category Analysis -->
+                        <div class="alert alert-light mb-3">
+                            <h6><i class="fas fa-tags text-success"></i> Category Pattern</h6>
+                            <p>
+                                Most spending in: <strong>{{ stats.favorite_category }}</strong><br>
+                                {% if stats.favorite_category == 'Food' %}
+                                <span class="text-info">🍽️ Consider meal planning to reduce food expenses</span>
+                                {% elif stats.favorite_category == 'Entertainment' %}
+                                <span class="text-info">🎬 Entertainment expenses can add up quickly</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        
+                        <!-- ML Features List -->
+                        <div class="bg-light p-3 rounded">
+                            <h6><i class="fas fa-cogs"></i> ML Features Active:</h6>
+                            <div class="d-flex flex-wrap gap-2 mt-2">
+                                <span class="badge bg-primary">Smart Categorization</span>
+                                <span class="badge bg-success">Pattern Detection</span>
+                                <span class="badge bg-info">Trend Analysis</span>
+                                <span class="badge bg-warning">Expense Prediction</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts Placeholder -->
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Visual Analytics</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center py-5">
+                    <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                    <h5>Charts Coming Soon</h5>
+                    <p class="text-muted">
+                        Add more expenses to unlock:<br>
+                        📊 Pie charts • 📈 Trend graphs • 🔮 Predictive analytics
+                    </p>
+                    <div class="mt-3">
+                        <span class="badge bg-primary me-2">
+                            <i class="fas fa-brain"></i> ML Powered
+                        </span>
+                        <span class="badge bg-success">
+                            <i class="fas fa-bolt"></i> Real-time Updates
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add interactive tooltips for ML features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tooltip for AI badges
+            const aiBadges = document.querySelectorAll('.badge');
+            aiBadges.forEach(badge => {
+                if (badge.textContent.includes('AI') || badge.textContent.includes('ML')) {
+                    badge.style.cursor = 'pointer';
+                    badge.title = 'This feature uses Machine Learning algorithms to analyze your spending patterns and provide intelligent insights.';
+                }
+            });
+            
+            // Show loading animation
+            const loadingEl = document.getElementById('loading');
+            if (loadingEl) {
+                setTimeout(() => {
+                    loadingEl.style.display = 'none';
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

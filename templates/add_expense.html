@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Add Expense - SpendWise</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+        }
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .app-container {
+            background: white;
+            min-height: 100vh;
+            border-radius: 20px 20px 0 0;
+            margin-top: 20px;
+            padding-bottom: 100px;
+        }
+        
+        .input-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.1);
+            margin-bottom: 15px;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            padding: 12px 15px;
+            font-size: 16px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .quick-add-btn {
+            background: white;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 10px;
+            margin: 5px;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .quick-add-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .ai-analysis-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 16px;
+            border: none;
+        }
+        
+        .ai-badge {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .back-btn {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                border-radius: 20px 20px 0 0;
+                margin-top: 0;
+            }
+            
+            body {
+                background: var(--primary);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="container pt-4">
+        <div class="d-flex align-items-center mb-4">
+            <a href="/" class="back-btn me-3">
+                <i class="fas fa-arrow-left fa-lg"></i>
+            </a>
+            <div>
+                <h2 class="fw-bold mb-1">Add Expense</h2>
+                <p class="text-muted">Smart AI-powered tracking</p>
+            </div>
+            <div class="ms-auto">
+                <span class="ai-badge pulse">
+                    <i class="fas fa-robot"></i> AI Active
+                </span>
+                <span class="badge bg-secondary ms-2">
+                    <i class="fas fa-user"></i> {{ username }}
+                </span>
+            </div>
+        </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <!-- Input Form -->
+                    <div class="input-card">
+                        <form id="expenseForm">
+                            <!-- Amount Input -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-rupee-sign text-primary"></i> Amount (₹)
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="fas fa-wallet text-muted"></i>
+                                    </span>
+                                    <input type="number" 
+                                           step="0.01" 
+                                           class="form-control border-start-0" 
+                                           id="amount" 
+                                           placeholder="0.00"
+                                           required>
+                                </div>
+                            </div>
+                            
+                            <!-- Description -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-align-left text-primary"></i> Description
+                                </label>
+                                <textarea class="form-control" 
+                                          id="description" 
+                                          rows="3" 
+                                          placeholder="What was this expense for? Be specific for better AI analysis."
+                                          required></textarea>
+                            </div>
+                            
+                            <!-- Payment Method -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-credit-card text-primary"></i> Payment Method
+                                </label>
+                                <select class="form-select" id="payment_method" required>
+                                    <option value="">Select method</option>
+                                    <option value="Cash">💵 Cash</option>
+                                    <option value="Credit Card">💳 Credit Card</option>
+                                    <option value="Debit Card">🏦 Debit Card</option>
+                                    <option value="UPI">📱 UPI</option>
+                                    <option value="Net Banking">🌐 Net Banking</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-tag text-primary"></i> Category (Optional)
+                                </label>
+                                <select class="form-select" id="category">
+                                    <option value="">AI will predict category</option>
+                                    <option value="Food">🍽️ Food</option>
+                                    <option value="Transport">🚗 Transport</option>
+                                    <option value="Entertainment">🎬 Entertainment</option>
+                                    <option value="Shopping">🛍️ Shopping</option>
+                                    <option value="Bills">📄 Bills</option>
+                                    <option value="Healthcare">🏥 Healthcare</option>
+                                    <option value="Education">📚 Education</option>
+                                    <option value="Other">📦 Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Merchant (optional) -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-store text-primary"></i> Merchant/Shop (Optional)
+                                </label>
+                                <input type="text" class="form-control" id="merchant" placeholder="e.g., Starbucks, Amazon">
+                            </div>
+
+                            <!-- Location (optional) -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-map-marker-alt text-primary"></i> Location (Optional)
+                                </label>
+                                <input type="text" class="form-control" id="location" placeholder="e.g., Mumbai, Online">
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-submit" id="submitBtn">
+                                <i class="fas fa-save"></i> Save Expense
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Quick Add Examples -->
+                    <div class="input-card">
+                        <h6 class="fw-bold mb-3">
+                            <i class="fas fa-bolt text-warning"></i> Quick Add
+                        </h6>
+                        <div class="d-flex flex-wrap">
+                            <button class="quick-add-btn" onclick="quickAdd('Lunch at restaurant', 300)">
+                                <div class="text-center">
+                                    <div class="mb-2">
+                                        <i class="fas fa-utensils fa-lg text-primary"></i>
+                                    </div>
+                                    <small class="fw-bold">Lunch</small>
+                                    <div class="text-muted">₹300</div>
+                                </div>
+                            </button>
+                            
+                            <button class="quick-add-btn" onclick="quickAdd('Fuel for vehicle', 2000)">
+                                <div class="text-center">
+                                    <div class="mb-2">
+                                        <i class="fas fa-gas-pump fa-lg text-success"></i>
+                                    </div>
+                                    <small class="fw-bold">Fuel</small>
+                                    <div class="text-muted">₹2000</div>
+                                </div>
+                            </button>
+                            
+                            <button class="quick-add-btn" onclick="quickAdd('Movie tickets', 800)">
+                                <div class="text-center">
+                                    <div class="mb-2">
+                                        <i class="fas fa-film fa-lg text-warning"></i>
+                                    </div>
+                                    <small class="fw-bold">Movies</small>
+                                    <div class="text-muted">₹800</div>
+                                </div>
+                            </button>
+                            
+                            <button class="quick-add-btn" onclick="quickAdd('Grocery shopping', 1200)">
+                                <div class="text-center">
+                                    <div class="mb-2">
+                                        <i class="fas fa-shopping-basket fa-lg text-danger"></i>
+                                    </div>
+                                    <small class="fw-bold">Grocery</small>
+                                    <div class="text-muted">₹1200</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Analysis Section -->
+                    <div class="ai-analysis-card mt-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0">
+                                    <i class="fas fa-robot text-primary"></i> AI Analysis
+                                </h5>
+                                <span class="ai-badge">Real-time</span>
+                            </div>
+                            <div id="analysisResult">
+                                <div class="text-center py-4">
+                                    <i class="fas fa-microchip fa-2x text-muted mb-3"></i>
+                                    <p class="text-muted mb-0">Enter expense details to see AI analysis</p>
+                                    <small class="text-primary">
+                                        <i class="fas fa-bolt"></i> ML engine ready
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            fetch('/api/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.logged_in) {
+                        window.location.href = '/login';
+                    }
+                })
+                .catch(() => {
+                    // If API fails, still show the page
+                });
+        });
+
+        document.getElementById('expenseForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+        const expenseData = {
+            amount: parseFloat(document.getElementById('amount').value),
+            description: document.getElementById('description').value,
+            payment_method: document.getElementById('payment_method').value
+        };
+        
+        // Add optional fields
+        const category = document.getElementById('category').value;
+        const merchant = document.getElementById('merchant').value;
+        const location = document.getElementById('location').value;
+        
+        if (category) expenseData.category = category;
+        if (merchant) expenseData.merchant = merchant;
+        if (location) expenseData.location = location;
+        
+    });
+        document.getElementById('expenseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading
+            submitBtn.innerHTML = '<span class="loader"></span> Saving...';
+            submitBtn.disabled = true;
+            
+            const amount = document.getElementById('amount').value;
+            const description = document.getElementById('description').value;
+            const paymentMethod = document.getElementById('payment_method').value;
+            
+            if (!amount || !description || !paymentMethod) {
+                showAlert('Please fill all required fields', 'danger');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            const expenseData = {
+                amount: parseFloat(amount),
+                description: description,
+                payment_method: paymentMethod
+            };
+            
+            try {
+                const response = await fetch('/api/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(expenseData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show AI analysis
+                    const analysis = result.prediction;
+                    document.getElementById('analysisResult').innerHTML = `
+                        <div class="alert alert-success border-0">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check-circle fa-2x me-3 text-success"></i>
+                                <div>
+                                    <h5 class="fw-bold mb-0">✅ Expense Saved!</h5>
+                                    <small class="text-muted">AI analyzed successfully</small>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="text-center p-2">
+                                        <div class="badge bg-primary p-2 mb-2">Category</div>
+                                        <p class="fw-bold mb-0">${analysis.predicted_category}</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="text-center p-2">
+                                        <div class="badge ${analysis.is_essential ? 'bg-success' : 'bg-warning'} p-2 mb-2">
+                                            ${analysis.is_essential ? 'Essential' : 'Non-essential'}
+                                        </div>
+                                        <p class="fw-bold mb-0">${analysis.is_essential ? '✅ Need' : '⚠️ Want'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <p class="mb-2"><i class="fas fa-brain text-primary"></i> <strong>AI Confidence:</strong> ${(analysis.confidence * 100).toFixed(1)}%</p>
+                                <p class="mb-0"><i class="fas fa-bell text-warning"></i> ${analysis.alert[0]}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Show success message
+                    showAlert('Expense added successfully! Redirecting...', 'success');
+                    
+                    // Clear form
+                    document.getElementById('expenseForm').reset();
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 2000);
+                    
+                } else {
+                    document.getElementById('analysisResult').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Error:</strong> ${result.error || 'Failed to save expense'}
+                        </div>
+                    `;
+                    showAlert('Failed to save expense', 'danger');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('analysisResult').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-wifi-slash"></i>
+                        <strong>Network Error:</strong> Please check your connection
+                    </div>
+                `;
+                showAlert('Network error. Please try again.', 'danger');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        function quickAdd(description, amount) {
+            document.getElementById('description').value = description;
+            document.getElementById('amount').value = amount;
+            document.getElementById('payment_method').value = 'Cash';
+            
+            // Show preview analysis
+            const analysisDiv = document.getElementById('analysisResult');
+            if (amount > 5000) {
+                analysisDiv.innerHTML = `
+                    <div class="alert alert-warning">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">⚠️ Large Expense Detected</h6>
+                                <p class="mb-0 small">This appears to be a significant expense (₹${amount}).</p>
+                            </div>
+                        </div>
+                        <hr class="my-2">
+                        <p class="mb-0 small"><i class="fas fa-lightbulb"></i> Consider if this is essential spending.</p>
+                    </div>
+                `;
+            } else {
+                analysisDiv.innerHTML = `
+                    <div class="alert alert-info">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-clipboard-check fa-2x me-3 text-info"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">📝 Ready to Save</h6>
+                                <p class="mb-0 small">Click "Save Expense" to add this record.</p>
+                            </div>
+                        </div>
+                        <hr class="my-2">
+                        <p class="mb-0 small">
+                            <i class="fas fa-rupee-sign"></i> <strong>Amount:</strong> ₹${amount}<br>
+                            <i class="fas fa-align-left"></i> <strong>Description:</strong> ${description}
+                        </p>
+                    </div>
+                `;
+            }
+        }
+        
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 9999;
+                max-width: 90%;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            `;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+        
+        // Auto-focus amount input
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('amount').focus();
+        });
+    </script>
+</body>
+</html>

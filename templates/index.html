@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💰 SpendWise - Expense Tracker</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+        }
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+        
+        .app-container {
+            background: white;
+            min-height: 100vh;
+            border-radius: 20px 20px 0 0;
+            margin-top: 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 10px 0;
+            box-shadow: 0 -2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .nav-item {
+            text-align: center;
+            padding: 5px;
+        }
+        
+        .nav-icon {
+            font-size: 22px;
+            color: var(--gray);
+            display: block;
+            margin: 0 auto 5px;
+        }
+        
+        .nav-text {
+            font-size: 12px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: var(--primary);
+        }
+        
+        .nav-item.active .nav-text {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Stats Cards */
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .icon-spend { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .icon-daily { background: linear-gradient(135deg, #10b981, #34d399); color: white; }
+        .icon-trans { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; }
+        .icon-status { background: linear-gradient(135deg, #8b5cf6, #a78bfa); color: white; }
+        
+        /* Expense Items */
+        .expense-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .expense-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+        
+        .essential { border-color: var(--success); }
+        .non-essential { border-color: var(--warning); }
+        
+        .category-badge {
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            z-index: 1001;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Insights Cards */
+        .insight-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 16px;
+            padding: 15px;
+            border: none;
+        }
+        
+        .ai-badge {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .app-container {
+                border-radius: 20px 20px 0 0;
+                margin-top: 0;
+            }
+            
+            body {
+                background: var(--primary);
+            }
+            
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Loading Animation */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Pulse Animation for AI Features */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        <div class="container pt-4">
+            <!-- App Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1" style="color: var(--dark);">SpendWise</h2>
+                    <p class="text-muted mb-0">AI-Powered Expense Tracker</p>
+                </div>
+                <div>
+                    <span class="ai-badge pulse">
+                        <i class="fas fa-robot"></i> AI Active
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-spend">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h5 class="text-muted mb-2">This Month</h5>
+                        <h3 class="fw-bold" style="color: var(--primary);">₹{{ total_spent|round(2) }}</h3>
+                        <small class="text-muted">Total Spent</small>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-daily">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <h5 class="text-muted mb-2">Daily Average</h5>
+                        <h3 class="fw-bold" style="color: var(--success);">₹{{ avg_daily|round(2) }}</h3>
+                        <small class="text-muted">Per Day</small>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-trans">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h5 class="text-muted mb-2">Transactions</h5>
+                        <h3 class="fw-bold" style="color: var(--warning);">{{ recent_expenses|length }}</h3>
+                        <small class="text-muted">Recent</small>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-status">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5 class="text-muted mb-2">Status</h5>
+                        {% if recent_expenses|length > 0 %}
+                        <h3 class="fw-bold" style="color: var(--success);">Active</h3>
+                        {% else %}
+                        <h3 class="fw-bold" style="color: var(--warning);">Inactive</h3>
+                        {% endif %}
+                        <small class="text-muted">Tracking</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Expenses -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-history text-primary"></i> Recent Expenses
+                        </h5>
+                        <span class="badge bg-primary rounded-pill">{{ recent_expenses|length }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if recent_expenses %}
+                        <div id="expensesList">
+                            {% for expense in recent_expenses %}
+                            <div class="expense-item {{ 'essential' if expense.is_essential else 'non-essential' }}" 
+                                 id="expense-{{ expense.id }}">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="flex-grow-1" onclick="showExpenseDetails({{ expense.id }})" style="cursor: pointer;">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <h6 class="fw-bold mb-0">₹{{ expense.amount|round(2) }}</h6>
+                                            <span class="category-badge">{{ expense.category }}</span>
+                                        </div>
+                                        <p class="mb-1 text-dark">{{ expense.description }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                <i class="far fa-calendar"></i> {{ expense.date }}
+                                            </small>
+                                            <small class="text-muted">
+                                                <i class="fas fa-credit-card"></i> {{ expense.payment_method }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="ms-3 d-flex flex-column align-items-end">
+                                        <span class="badge {{ 'bg-success' if expense.is_essential else 'bg-warning' }} mb-1">
+                                            {{ 'Essential' if expense.is_essential else 'Non-essential' }}
+                                        </span>
+                                        <button class="btn btn-sm btn-outline-danger delete-btn" 
+                                                onclick="deleteExpense({{ expense.id }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="fas fa-receipt fa-3x text-muted"></i>
+                            </div>
+                            <h5 class="text-muted mb-2">No expenses yet</h5>
+                            <p class="text-muted mb-3">Add your first expense to get started!</p>
+                            <a href="/add" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add First Expense
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- AI Insights -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-lightbulb text-warning"></i> AI Insights
+                        </h5>
+                        <span class="ai-badge pulse">
+                            <i class="fas fa-bolt"></i> Live Analysis
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% for insight in insights %}
+                    <div class="insight-card mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <i class="fas fa-robot text-primary mt-1"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <p class="mb-0">{{ insight }}</p>
+                                <small class="text-primary">
+                                    <i class="fas fa-microchip"></i> ML Engine Analysis
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Action Button -->
+    <a href="/add" class="fab">
+        <i class="fas fa-plus"></i>
+    </a>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-3 nav-item active">
+                    <a href="/" class="text-decoration-none">
+                        <i class="fas fa-home nav-icon"></i>
+                        <div class="nav-text">Home</div>
+                    </a>
+                </div>
+                <div class="col-3 nav-item">
+                    <a href="/add" class="text-decoration-none">
+                        <i class="fas fa-plus-circle nav-icon"></i>
+                        <div class="nav-text">Add</div>
+                    </a>
+                </div>
+                <div class="col-3 nav-item">
+                    <a href="/analytics" class="text-decoration-none">
+                        <i class="fas fa-chart-bar nav-icon"></i>
+                        <div class="nav-text">Analytics</div>
+                    </a>
+                </div>
+                <div class="col-3 nav-item">
+                    <a href="#" class="text-decoration-none" onclick="showMoreOptions()">
+                        <i class="fas fa-ellipsis-h nav-icon"></i>
+                        <div class="nav-text">More</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Make it a PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed:', err);
+                    });
+            });
+        }
+        
+        // Add to Home Screen prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            setTimeout(() => {
+                if (deferredPrompt && confirm('Install SpendWise for quick access?')) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User installed the app');
+                        }
+                        deferredPrompt = null;
+                    });
+                }
+            }, 3000);
+        });
+        
+        // Bottom nav active state
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname;
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                const link = item.querySelector('a');
+                if (link.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        
+        // Show expense details (for future enhancement)
+        function showExpenseDetails(id) {
+            alert('Expense details feature coming soon!');
+        }
+        
+        // More options menu
+        function showMoreOptions() {
+            const options = `
+                <div class="list-group">
+                    <a href="/analytics" class="list-group-item list-group-item-action">
+                        <i class="fas fa-chart-pie text-primary"></i> Detailed Reports
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="shareApp()">
+                        <i class="fas fa-share-alt text-success"></i> Share with Friends
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="exportData()">
+                        <i class="fas fa-download text-info"></i> Export Data
+                    </a>
+                    <a href="/logout" class="list-group-item list-group-item-action">
+                        <i class="fas fa-sign-out-alt text-danger"></i> Logout
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="showAbout()">
+                        <i class="fas fa-info-circle text-warning"></i> About
+                    </a>
+                </div>
+            `;
+            
+            // Create modal
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fas fa-cog"></i> More Options</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            ${options}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            
+            modal.addEventListener('hidden.bs.modal', function () {
+                document.body.removeChild(modal);
+            });
+        }
+        
+        // Share app function
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SpendWise Expense Tracker',
+                    text: 'Track your expenses with AI-powered insights!',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers without Web Share API
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard! Share it with your friends.');
+            }
+        }
+        
+        // Export data function
+        async function exportData() {
+            try {
+                const response = await fetch('/api/expenses');
+                const data = await response.json();
+                
+                // Convert to CSV
+                const csv = [
+                    ['Date', 'Amount', 'Description', 'Category', 'Payment Method', 'Essential'],
+                    ...data.map(expense => [
+                        expense.date,
+                        expense.amount,
+                        expense.description,
+                        expense.category,
+                        expense.payment_method,
+                        expense.is_essential ? 'Yes' : 'No'
+                    ])
+                ].map(row => row.join(',')).join('\n');
+                
+                // Download file
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'expenses.csv';
+                a.click();
+                
+                alert('Data exported successfully!');
+            } catch (error) {
+                alert('Error exporting data: ' + error.message);
+            }
+        }
+        
+        setInterval(() => {
+            fetch('/api/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.logged_in) {
+                        alert('Session expired. Please login again.');
+                        window.location.href = '/login';
+                    }
+                });
+        }, 300000);
+        
+        // Show about info
+        function showAbout() {
+            alert('SpendWise v1.0\nAI-Powered Expense Tracker\nBuilt with Machine Learning\nShare with friends to track together!');
+        }
+        
+        // Online/offline detection
+        window.addEventListener('online', () => {
+            showNotification('Back online! Syncing data...', 'success');
+        });
+        
+        window.addEventListener('offline', () => {
+            showNotification('You are offline. Data will sync when back online.', 'warning');
+        });
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                max-width: 300px;
+            `;
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Delete expense function (IMPORTANT: Add this function)
+        async function deleteExpense(expenseId) {
+            if (!confirm('Are you sure you want to delete this expense?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/expense/${expenseId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Remove the expense item from UI with animation
+                    const expenseElement = document.getElementById(`expense-${expenseId}`);
+                    if (expenseElement) {
+                        expenseElement.style.opacity = '0';
+                        expenseElement.style.transform = 'translateX(-100px)';
+                        expenseElement.style.transition = 'all 0.3s ease';
+                        
+                        setTimeout(() => {
+                            expenseElement.remove();
+                            
+                            // Update the transaction count in stats card
+                            const transactionElement = document.querySelector('.icon-trans + h5 + h3.fw-bold');
+                            if (transactionElement) {
+                                const currentCount = parseInt(transactionElement.textContent);
+                                transactionElement.textContent = Math.max(0, currentCount - 1);
+                            }
+                            
+                            // Update total spent
+                            const totalElement = document.querySelector('.icon-spend + h5 + h3.fw-bold');
+                            if (totalElement) {
+                                const expenseAmount = parseFloat(expenseElement.querySelector('h6.fw-bold').textContent.replace('₹', ''));
+                                const currentTotal = parseFloat(totalElement.textContent.replace('₹', ''));
+                                totalElement.textContent = '₹' + (currentTotal - expenseAmount).toFixed(2);
+                            }
+                            
+                            // Update badge count
+                            const badgeElement = document.querySelector('.card-header .badge');
+                            if (badgeElement) {
+                                const badgeCount = parseInt(badgeElement.textContent);
+                                badgeElement.textContent = Math.max(0, badgeCount - 1);
+                            }
+                            
+                            // Show success message with better notification
+                            showCustomNotification('✅ Expense deleted successfully', 'success');
+                        }, 300);
+                    }
+                } else {
+                    alert('Failed to delete: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error deleting expense: ' + error.message);
+            }
+        }
+        
+        // Better notification function
+        function showCustomNotification(message, type) {
+            // Remove existing notifications
+            const existing = document.querySelector('.custom-notification');
+            if (existing) existing.remove();
+            
+            const notification = document.createElement('div');
+            notification.className = `custom-notification alert alert-${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <strong>${type === 'success' ? '✅' : '⚠️'}</strong> ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+            
+            // Add CSS animations if not already added
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // Auto-refresh data every 60 seconds
+        setInterval(() => {
+            if (navigator.onLine) {
+                window.location.reload();
+            }
+        }, 60000);
+    </script>
+</body>
+</html>

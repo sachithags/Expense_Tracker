@@ -1,0 +1,101 @@
+date,amount,category,description,is_essential,is_weekend,payment_method,merchant
+2025-11-16,26984.93,Healthcare,Medicine expense,1,1,Debit Card,Online
+2025-10-25,965.24,Food,Restaurant expense,0,1,UPI,Store
+2025-10-11,8495.3,Bills,Phone expense,1,1,Credit Card,Online
+2025-09-15,1989.96,Food,Groceries expense,1,0,Debit Card,Restaurant
+2025-07-29,1087.48,Bills,Internet expense,1,0,Credit Card,Online
+2025-11-08,17901.67,Healthcare,Medicine expense,1,1,Cash,Store
+2025-12-02,48724.11,Shopping,Electronics expense,0,0,Cash,Service
+2025-08-26,1835.76,Shopping,Home expense,1,0,Cash,Store
+2025-12-16,5604.3,Healthcare,Doctor expense,1,0,Debit Card,Store
+2025-12-10,16224.02,Shopping,Home expense,0,0,UPI,Service
+2025-07-24,8617.63,Entertainment,Concerts expense,0,0,Debit Card,Service
+2025-11-26,16010.16,Bills,Electricity expense,1,0,Debit Card,Online
+2025-09-07,1719.28,Transport,Public Transport expense,0,1,Debit Card,Service
+2025-11-07,11746.46,Bills,Internet expense,1,0,Debit Card,Store
+2025-10-30,3915.44,Entertainment,Concerts expense,1,0,Credit Card,Online
+2025-09-24,7992.03,Entertainment,Movies expense,0,0,Debit Card,Restaurant
+2025-10-23,3550.31,Healthcare,Doctor expense,1,0,UPI,Store
+2025-12-05,1508.98,Food,Groceries expense,1,0,Debit Card,Service
+2025-11-16,17198.21,Shopping,Home expense,0,1,Credit Card,Online
+2025-08-05,4108.46,Transport,Fuel expense,0,0,UPI,Store
+2025-07-20,34755.21,Shopping,Electronics expense,0,1,Cash,Service
+2025-12-09,312.73,Entertainment,Games expense,1,0,UPI,Restaurant
+2025-10-18,13696.45,Bills,Internet expense,1,1,Cash,Online
+2025-10-19,939.4,Healthcare,Fitness expense,1,1,Debit Card,Restaurant
+2025-08-08,662.03,Food,Takeout expense,1,0,UPI,Restaurant
+2025-12-27,317.52,Food,Coffee expense,0,1,Credit Card,Service
+2025-08-02,1970.55,Transport,Public Transport expense,1,1,UPI,Service
+2025-09-23,986.35,Entertainment,Games expense,1,0,Credit Card,Store
+2025-09-08,15700.93,Healthcare,Doctor expense,1,0,Debit Card,Service
+2025-10-24,1166.15,Food,Restaurant expense,0,0,Credit Card,Restaurant
+2025-08-14,3574.61,Entertainment,Subscriptions expense,0,0,Credit Card,Service
+2025-07-10,2697.81,Transport,Maintenance expense,1,0,UPI,Restaurant
+2025-12-21,816.19,Food,Groceries expense,0,1,Credit Card,Store
+2025-08-05,30603.05,Shopping,Clothes expense,0,0,Debit Card,Service
+2025-09-07,491.01,Transport,Taxi expense,0,1,Debit Card,Service
+2025-09-22,33356.85,Shopping,Clothes expense,0,0,Debit Card,Restaurant
+2025-07-18,1390.9,Transport,Fuel expense,0,0,Cash,Service
+2025-09-19,46257.97,Shopping,Clothes expense,0,0,UPI,Service
+2025-10-16,13022.58,Bills,Internet expense,1,0,Credit Card,Store
+2025-10-11,47754.04,Shopping,Electronics expense,0,1,Credit Card,Store
+2025-09-03,1860.68,Food,Groceries expense,0,0,Cash,Service
+2025-09-16,70.2,Food,Groceries expense,1,0,Credit Card,Service
+2025-09-01,23127.58,Healthcare,Insurance expense,1,0,Credit Card,Online
+2025-09-17,2024.46,Food,Takeout expense,1,0,Cash,Restaurant
+2025-07-19,1906.43,Transport,Fuel expense,0,1,Debit Card,Restaurant
+2025-12-23,28705.86,Healthcare,Doctor expense,1,0,Cash,Restaurant
+2025-12-16,9202.81,Shopping,Home expense,1,0,Cash,Store
+2025-07-24,21608.8,Healthcare,Insurance expense,1,0,Credit Card,Service
+2025-11-10,26907.78,Shopping,Electronics expense,0,0,UPI,Store
+2025-07-23,18826.53,Shopping,Other expense,0,0,UPI,Service
+2025-11-11,2331.03,Entertainment,Movies expense,1,0,UPI,Service
+2025-11-15,30130.85,Shopping,Other expense,0,1,Cash,Online
+2025-09-18,10581.18,Shopping,Home expense,0,0,Debit Card,Store
+2025-08-25,2305.08,Transport,Taxi expense,1,0,Credit Card,Service
+2025-11-08,6813.44,Entertainment,Subscriptions expense,0,1,UPI,Store
+2025-10-08,16570.78,Bills,Internet expense,1,0,Credit Card,Store
+2025-08-25,12996.43,Shopping,Home expense,0,0,Debit Card,Online
+2025-11-09,36169.45,Shopping,Clothes expense,0,1,Cash,Online
+2025-09-08,1238.42,Food,Restaurant expense,0,0,Cash,Online
+2025-09-12,10798.81,Shopping,Clothes expense,0,0,Credit Card,Service
+2025-08-10,11039.74,Bills,Rent expense,1,1,Credit Card,Service
+2025-07-31,2830.11,Bills,Electricity expense,1,0,Credit Card,Service
+2025-10-17,2509.77,Food,Groceries expense,0,0,Credit Card,Store
+2025-12-29,962.11,Food,Coffee expense,0,0,Debit Card,Restaurant
+2025-07-20,15563.38,Bills,Electricity expense,1,1,Credit Card,Service
+2025-10-03,9598.74,Bills,Electricity expense,1,0,Cash,Online
+2025-11-15,20630.71,Healthcare,Medicine expense,1,1,Cash,Restaurant
+2025-11-03,15142.13,Healthcare,Doctor expense,1,0,Cash,Restaurant
+2025-07-27,1767.55,Food,Coffee expense,1,1,Debit Card,Online
+2025-07-11,2396.2,Food,Restaurant expense,1,0,UPI,Store
+2025-08-03,1447.03,Food,Takeout expense,1,1,Credit Card,Store
+2025-10-04,503.86,Shopping,Electronics expense,1,1,Cash,Store
+2025-08-10,38423.61,Shopping,Clothes expense,0,1,Debit Card,Store
+2025-09-27,1367.95,Food,Coffee expense,0,1,Credit Card,Online
+2025-10-17,2111.19,Transport,Fuel expense,1,0,UPI,Service
+2025-09-20,2916.01,Shopping,Other expense,0,1,UPI,Service
+2025-08-07,1974.24,Food,Restaurant expense,0,0,Credit Card,Online
+2025-12-04,3828.1,Entertainment,Games expense,1,0,Credit Card,Service
+2025-07-09,6435.16,Healthcare,Insurance expense,1,0,Debit Card,Restaurant
+2025-08-28,1219.12,Food,Restaurant expense,0,0,UPI,Service
+2025-08-25,47916.87,Shopping,Other expense,0,0,Credit Card,Online
+2025-09-06,30121.95,Shopping,Other expense,0,1,Debit Card,Store
+2025-11-05,26211.55,Healthcare,Doctor expense,1,0,UPI,Store
+2025-07-10,12488.2,Bills,Internet expense,1,0,Cash,Restaurant
+2025-12-23,3253.8,Transport,Maintenance expense,0,0,Cash,Service
+2025-10-13,546.91,Transport,Public Transport expense,1,0,Credit Card,Service
+2025-10-08,3559.09,Entertainment,Subscriptions expense,0,0,Cash,Online
+2025-08-12,3559.64,Bills,Electricity expense,1,0,Credit Card,Restaurant
+2025-11-19,1415.01,Entertainment,Subscriptions expense,0,0,UPI,Online
+2025-10-06,9910.28,Bills,Electricity expense,1,0,Debit Card,Service
+2025-12-31,3644.2,Entertainment,Games expense,0,0,Cash,Store
+2025-07-23,9863.1,Entertainment,Subscriptions expense,0,0,Cash,Service
+2025-07-18,1110.92,Transport,Maintenance expense,0,0,UPI,Service
+2025-08-26,654.26,Food,Coffee expense,0,0,Cash,Service
+2025-12-20,13326.23,Bills,Phone expense,1,1,UPI,Service
+2025-12-04,2492.89,Food,Coffee expense,1,0,Debit Card,Service
+2025-08-20,1475.0,Shopping,Home expense,1,0,Credit Card,Restaurant
+2025-10-11,1624.96,Food,Groceries expense,0,1,Cash,Online
+2025-11-05,9789.71,Entertainment,Games expense,0,0,Cash,Restaurant
+2025-11-05,425.25,Entertainment,Games expense,0,0,UPI,Restaurant
