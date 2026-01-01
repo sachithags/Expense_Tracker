@@ -3,7 +3,7 @@ import sys
 import sqlite3
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from src.database import ExpenseDatabase
+from database import ExpenseDatabase
 
 
 if 'PYTHONANYWHERE' in os.environ:
@@ -23,7 +23,6 @@ TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'templates')
 app = Flask(__name__, template_folder=TEMPLATE_DIR)
 app.secret_key = os.urandom(24)
 
-from database import ExpenseDatabase
 db = ExpenseDatabase(DB_PATH)
 
 def init_app():
