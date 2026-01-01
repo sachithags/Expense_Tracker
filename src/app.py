@@ -3,7 +3,8 @@ import sys
 import sqlite3
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from database import ExpenseDatabase
+from src.database import ExpenseDatabase
+
 
 if 'PYTHONANYWHERE' in os.environ:
     USERNAME = os.environ.get('PYTHONANYWHERE_USERNAME', 'yourusername')
